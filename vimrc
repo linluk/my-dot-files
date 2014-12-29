@@ -1,18 +1,53 @@
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
-" list of plugins:
-"   * clang_complete
-"   * crefvim
-"   * tabbar
-"   * dragvisuals
+" 
+" how to install vim plugins:
+"   apt-get install clang
+"   mkdir ~/.vim/tmp/backup
+"   mkdir ~/.vim/tmp/undo
+"   mkdir ~/.vim/tmp/swap
+"   mkdir ~/.vim/bundle
+"   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"   vim
+"   :PluginInstall
+" done.
+"
 
 " needed because i am on debian.
 runtime! debian.vim
 
-" needed to introduce the dragvisuals plugin (see vmaps left, right, up, down)
-runtime plugin/dragvisuals.vim
-
+" needed to run vundle (but i want this anyways)
 set nocompatible
 
+" vundle needs filtype plugins off
+" i turn it on later
+filetype off
+syntax off
+
+" set the runtime path for vundle
+set rtp+=~/.vim/bundle/Vundle.vim
+
+" start vundle environment
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" to install a new plugin simply add it after this and
+" run :PluginInstall.
+"
+" to update the plugins run :PluginInstall! or :PluginUpdate
+"
+
+Plugin 'Rip-Rip/clang_complete'
+Plugin 'vim-scripts/CRefVim'
+Plugin 'jondkinney/dragvisuals.vim'
+Plugin 'bling/vim-airline'
+
+"
+" add plugins before this
+call vundle#end()
+
+" now (after vundle finished) it is save to turn filetype plugins on
 filetype plugin indent on
 syntax on
 
@@ -40,6 +75,9 @@ set number
 hi LineNr ctermbg=black
 hi CursorLineNr ctermbg=black
 set numberwidth=5
+
+" i want to use the airline tabs
+let g:airline#extensions#tabline#enabled=1
 
 set pumheight=25             " so the complete menu doesn't get too big
 set completeopt=menu,longest " menu, menuone, longest and preview
@@ -70,10 +108,14 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
+" undo settings
+set undodir=~/.vim/tmp/undo
+
 " backup and swap settings
+set backupdir=~/.vim/tmp/backup
+set backupskip=*/tmp/*
+set directory=~/.vim/tmp/swap
 set backup
-set backupdir=~/.vim/backup
-set directory=~/.vim/swap
 
 " allow up to 50 tabs (default was 10, that was not enough for me)
 set tabpagemax=50
