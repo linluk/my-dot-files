@@ -32,16 +32,20 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" to install a new plugin simply add it after this and
-" run :PluginInstall.
-"
+" to install a plugin add it here and run :PluginInstall.
 " to update the plugins run :PluginInstall! or :PluginUpdate
+" to delete a plugin remove it here and run :PluginClean
 "
 
 Plugin 'Rip-Rip/clang_complete'
 Plugin 'vim-scripts/CRefVim'
 Plugin 'jondkinney/dragvisuals.vim'
 Plugin 'bling/vim-airline'
+Plugin 'scrooloose/syntastic'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
+" try <http://bytefluent.com/vivify/> to test colorschemes
+Plugin 'flazz/vim-colorschemes'
 
 "
 " add plugins before this
@@ -50,6 +54,14 @@ call vundle#end()
 " now (after vundle finished) it is save to turn filetype plugins on
 filetype plugin indent on
 syntax on
+
+" fix the c-switch-case{} indendation:
+" <http://stackoverflow.com/questions/19990835/issue-with-cindent-indentation-
+"      based-on-scope-in-switch-case-statements-in-vim>
+set cinoptions=l1
+
+" spell options
+set spelllang=de,en
 
 " some coloring stuff.
 if $COLORTERM == 'gnome-terminal'
@@ -86,6 +98,15 @@ let g:clang_complete_auto=0  " I can start the autocompletion myself, thanks..
 " let g:clang_snippets_engine='ultisnips'
 " let g:clang_auto_select=2  " automatically select and insert the first match
 
+" i want to autosave the last session as 'default'
+let g:session_autosave = 'yes'
+" but i dont want to restore the last session automaticaly
+let g:session_autoload = 'no'
+" every instance of vim should overwrite the default session when closed.
+let g:session_default_overwrite = 1
+" i dont need my colorsettings saved to the session.
+let g:session_persist_colors = 0
+
 " set wildmenu
 set noerrorbells
 
@@ -108,13 +129,15 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
+" the double slash at the end of the paths makes filenames include the path
+" with slashes replaced by percent sign.
+"
 " undo settings
-set undodir=~/.vim/tmp/undo
-
+set undodir=~/.vim/tmp/undo//
 " backup and swap settings
-set backupdir=~/.vim/tmp/backup
+set backupdir=~/.vim/tmp/backup//
 set backupskip=*/tmp/*
-set directory=~/.vim/tmp/swap
+set directory=~/.vim/tmp/swap//
 set backup
 
 " allow up to 50 tabs (default was 10, that was not enough for me)
