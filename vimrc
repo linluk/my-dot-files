@@ -20,7 +20,7 @@ set nocompatible
 
 " vundle needs filtype plugins off
 " i turn it on later
-filetype off
+filetype plugin indent off
 syntax off
 
 " set the runtime path for vundle
@@ -29,7 +29,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 " start vundle environment
 call vundle#begin()
 
-" let Vundle manage Vundle, required
+" let Vundle manage Vundle (this is required)
 Plugin 'gmarik/Vundle.vim'
 
 " to install a plugin add it here and run :PluginInstall.
@@ -44,7 +44,6 @@ Plugin 'bling/vim-airline'
 Plugin 'scrooloose/syntastic'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
-" try <http://bytefluent.com/vivify/> to test colorschemes
 Plugin 'flazz/vim-colorschemes'
 
 "
@@ -64,6 +63,7 @@ set cinoptions=l1
 set spelllang=de,en
 
 " some coloring stuff.
+" try <http://bytefluent.com/vivify/> to test colorschemes
 if $COLORTERM == 'gnome-terminal'
   "enable 256 colors when in gnome-terminal (my debian machine)
   set t_Co=256
@@ -82,11 +82,12 @@ match ColorColumn '\%81v'
 
 " some settings to highlight the current line and the linenumber
 set cursorline
-hi CursorLine term=none cterm=none ctermbg=black
+" cterm=none is needed to get rid of the ugly underlining of the current line.
+hi CursorLine cterm=none ctermbg=black
 set number
 hi LineNr ctermbg=black
 hi CursorLineNr ctermbg=black
-set numberwidth=5
+set numberwidth=6
 
 " i want to use the airline tabs
 let g:airline#extensions#tabline#enabled=1
@@ -166,8 +167,14 @@ if has("gui_running")
   set guifont=courier_new:h8:w5
 endif
 
-" when editing .vimrc it should be reloaded when saved
-autocmd bufwritepost .vimrc source %
+" when editing .vimrc it should be reloaded when saved 
+" <https://github.com/bling/vim-airline/issues/539>
+augroup reload_vimrc " {
+  autocmd!
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
+  autocmd BufWritePost $MYVIMRC AirlineRefresh
+augroup END " }
+"autocmd bufwritepost .vimrc source %
 
 " set the <leader> to , (used by crefvim for example)
 let mapleader = ","
