@@ -17,7 +17,7 @@
 " debian specific {{{1
 runtime! debian.vim
 
-" vundle {{{1
+" plugins {{{1
 
 " needed to run vundle (but i want this anyways)
 set nocompatible
@@ -45,6 +45,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Rip-Rip/clang_complete'
 " press and hold <leader> and type 'cr', 'cc' or 'cw' to open C Reference
 Plugin 'vim-scripts/CRefVim'
+Plugin 'sjl/gundo.vim'
 Plugin 'jondkinney/dragvisuals.vim'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/syntastic'
@@ -52,10 +53,14 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'flazz/vim-colorschemes'
 
+" to test my own plugins for comment them in 'own plugin' section and
+" uncomment them here.
+"Plugin 'linluk/vim-websearch'
+
 " add plugins before this
 call vundle#end()
 
-" my own plugins
+" own plugins {{{2
 set rtp+=~/.vim/own/vim-websearch
 
 " filetype syntax {{{1
@@ -64,9 +69,20 @@ filetype plugin indent on
 syntax on
 
 " plugin settings {{{1
-" here are settings for my plugins. 
+" here are settings for my plugins.
 " see fold area 'vundle' for a list of plugins.
 
+" gundo {{{2
+" i want the preview window under my file, not under the undo tree.
+" like this:          not like this (default):
+"   +-+-------+         +-+-------+
+"   |g| file  |         |g| file  |
+"   |g|       |         |g|       |
+"   |g+-------+         +-+       |
+"   |g|preview|         |p|       |
+"   +-+-------+         +-+-------+
+"
+let g:gundo_preview_bottom = 1
 " vim-websearch {{{2
 let g:web_search_engine = "google"
 let g:web_search_browser = "chromium"
@@ -163,6 +179,9 @@ set backupdir=~/.vim/tmp/backup//
 set backupskip=*/tmp/*
 set directory=~/.vim/tmp/swap//
 set backup
+set undofile
+set undolevels=1000
+set undoreload=10000
 
 " folding {{{2
 set foldmethod=marker
@@ -175,14 +194,24 @@ set autochdir
 set hidden
 
 " autocommands {{{1
-" when editing .vimrc it should be reloaded when saved 
+" when editing .vimrc it should be reloaded when saved
 " <https://github.com/bling/vim-airline/issues/539>
-augroup reload_vimrc " {
-  autocmd!
-  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
-  autocmd BufWritePost $MYVIMRC AirlineRefresh
-augroup END " }
+"augroup reload_vimrc " {
+"  autocmd!
+"  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
+"  autocmd BufWritePost $MYVIMRC AirlineRefresh
+"augroup END " }
 "autocmd bufwritepost .vimrc source %
+
+augroup myautocommandgroup
+  " put autocommands in this autogroug and call 'autocmd!' to clear them
+  " otherwise reloading vimrc gets very slow after a few times because
+  " they never get cleared and so vimrc will be sourced multiple times.
+  autocmd!
+  " reload vimrc when saved (and refresh airline due to:
+  "     <https://github.com/bling/vim-airline/issues/539> )
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
+augroup END
 
 " mappings {{{1
 
@@ -247,10 +276,19 @@ nnoremap <SPACE> za
 " use <leader><space> to fold all except the current cursor position
 nnoremap <leader><space> zMzvzz
 
+" gundo {{{2
+nnoremap <leader>u :GundoToggle<CR>
+
 " navigation {{{2
 " let ß (on german keyboard next to zero) jump to last char of line
 noremap ß $
 " i want to use <TAB> to jump between opening/closing brackets
 noremap <TAB> %
 
+" if i have wraped lines i want to go to next/previous visual line
+" not next/previous physical line!
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
 
