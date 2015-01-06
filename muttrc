@@ -1,0 +1,45 @@
+#
+# filename: .muttrc
+# author: lukas singer <lukas42singer (at) gmail (dot) com>
+#
+# you need a file in your home directory named .mutt_local
+# which should contain these lines:
+#
+#   set from = "foo.bar@example.com"
+#   set imap_user = "foo.bar@example.com"
+#   set imap_pass = "PaSsWoRd"
+#   set smtp_url = "smtp://foo.bar@smtp.gmail.com:587/"
+#   set smtp_pass = "PaSsWoRd"
+#
+
+## SOURCE .mutt_local (passwords, login names, ...)
+source ~/.mutt_local
+
+## MY NAME
+set realname = "Lukas Singer"
+
+## REMOTE GMAIL FOLDERS
+set folder = "imaps://imap.gmail.com:993"
+#set spoolfile = "+INBOX"
+set spoolfile = imaps://imap.gmail.com:993/INBOX
+set postponed ="+[Google Mail]/Drafts"
+set trash = "+[Google Mail]/Trash"
+
+## LOCAL FOLDERS FOR CACHED HEADERS AND CERTIFICATES
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+
+## SECURING
+set move = no  #Stop asking to "move read messages to mbox"!
+set imap_keepalive = 900
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+## Sort by newest conversation first.
+set sort = reverse-threads
+set sort_aux = last-date-received
+
+## Set editor to create new email
+set editor='vim'
+

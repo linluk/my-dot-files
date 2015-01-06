@@ -3,15 +3,15 @@
 # author: lukas42singer (at) gmail <dot> com
 # description: generates symbolic links to the dotfiles in this folder
 #              i need this folder for my 'my-dot-files' git repository.
-# 
+#
 # this file is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 
-dir=~/my-dot-files        # my-dot-files directory
-old=~/.my-dot-files_OLD   # backup directory
-files="vimrc"             # list of files/folders to link in the home dir
+dir=~/my-dot-files              # my-dot-files directory
+old=~/.my-dot-files_OLD         # backup directory
+files="vimrc muttrc"            # list of files/folders to link in the home dir
 
 echo "creating backup directory ($old) ..."
 mkdir -p $old
