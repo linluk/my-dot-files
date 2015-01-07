@@ -70,7 +70,7 @@ syntax on
 
 " plugin settings {{{1
 " here are settings for my plugins.
-" see fold area 'vundle' for a list of plugins.
+" see fold area 'plugins' for a list of plugins.
 
 " gundo {{{2
 " i want the preview window under my file, not under the undo tree.
