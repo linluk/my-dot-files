@@ -13,7 +13,7 @@
 "   :PluginInstall
 " done.
 "
-" TODO : 
+" TODO :
 "   * make it compatible to my computer in the office.
 "     our f***ing IT blocks git WTF !!!
 "     need to be windows compatible.
