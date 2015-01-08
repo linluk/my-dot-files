@@ -342,6 +342,11 @@ noremap ß $
 " i want to use <TAB> to jump between opening/closing brackets
 noremap <TAB> %
 
+" jump in (<C-]> is 'finger-yoga' on german keyboards)
+nnoremap <C-i> <C-]>
+" jump out
+nnoremap <C-o> <C-T>
+
 " if i have wraped lines i want to go to next/previous visual line
 " not next/previous physical line!
 noremap j gj
