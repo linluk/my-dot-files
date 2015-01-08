@@ -1,4 +1,4 @@
-" comment {{{1
+ " comment {{{1
 " filename: .vimrc
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
 "
@@ -17,10 +17,32 @@
 "   * make it compatible to my computer in the office.
 "     our f***ing IT blocks git WTF !!!
 "     need to be windows compatible.
+"     NOTE: i started to make it windows compatible, but i cant verify it
+"     today. lets do that tomorrow.
 "
 
-" debian specific {{{1
-runtime! debian.vim
+" os {{{1
+if has("win32")
+  " i am a windows machine
+  let s:os = "windows"
+elseif has("unix")
+  let s:uname = system("uname -a")
+  if s:uname =~ "Debian"
+    let s:os = "debian"
+  else
+    let s:os = "unix"
+  endif
+endif
+
+
+" debian {{{2
+if s:os == "debian"
+  runtime! debian.vim
+endif
+
+" windows {{{2
+
+
 
 " plugins {{{1
 
@@ -33,10 +55,19 @@ filetype plugin indent off
 syntax off
 
 " set the runtime path for vundle
-set rtp+=~/.vim/bundle/Vundle.vim
+if s:os == "windows"
+  set rtp+=$VIM\vimfiles\bundle\Vundle.vim
+else
+  set rtp+=~/.vim/bundle/Vundle.vim
+endif
 
 " start vundle environment
-call vundle#begin()
+if s:os == "windows"
+  call vundle#begin($VIM . "\vimfiles\bundle")
+else
+  " the default is ~/.vim/bundle
+  call vundle#begin()
+endif
 
 " list of plugins {{{2
 " let Vundle manage Vundle (this is required)
@@ -47,9 +78,12 @@ Plugin 'gmarik/Vundle.vim'
 " to delete a plugin remove it here and run :PluginClean
 "
 
-Plugin 'Rip-Rip/clang_complete'
+if s:os != "windows"
+  " i dont do c on windows
+  Plugin 'Rip-Rip/clang_complete'
+  Plugin 'vim-scripts/CRefVim'
+endif
 " press and hold <leader> and type 'cr', 'cc' or 'cw' to open C Reference
-Plugin 'vim-scripts/CRefVim'
 Plugin 'sjl/gundo.vim'
 Plugin 'jondkinney/dragvisuals.vim'
 Plugin 'bling/vim-airline'
@@ -58,7 +92,7 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'flazz/vim-colorschemes'
 
-" to test my own plugins for comment them in 'own plugin' section and
+" to test my own plugins with vundle comment them in 'own plugin' section and
 " uncomment them here.
 "Plugin 'linluk/vim-websearch'
 
@@ -66,7 +100,11 @@ Plugin 'flazz/vim-colorschemes'
 call vundle#end()
 
 " own plugins {{{2
-set rtp+=~/.vim/own/vim-websearch
+if s:os == "windows"
+  set rtp+=$VIM\vimfiles\own\vim-websearch
+else
+  set rtp+=~/.vim/own/vim-websearch
+endif
 
 " filetype syntax {{{1
 " now (after vundle finished) it is save to turn filetype plugins on
@@ -90,7 +128,11 @@ syntax on
 let g:gundo_preview_bottom = 1
 " vim-websearch {{{2
 let g:web_search_engine = "google"
-let g:web_search_browser = "chromium"
+if s:os == "windows"
+  let g:web_search_browser = "iexplorer.exe"
+else
+  let g:web_search_browser = "chromium"
+endif
 
 
 " vim-airline {{{2
@@ -124,6 +166,10 @@ if $COLORTERM == 'gnome-terminal'
 endif
 " try <http://bytefluent.com/vivify/> to test colorschemes
 colorscheme slate
+
+if has("gui_running")
+  set guifont=courier_new:h11:b
+endif
 
 " i want to highlight trailing whites
 hi TrailingWhitespace ctermbg=darkred ctermfg=darkred
@@ -179,10 +225,16 @@ set cinoptions=l1
 " undo, backup & swap {{{2
 " the double slash at the end of the paths makes filenames include the path
 " with slashes replaced by percent sign.
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
-set backupskip=*/tmp/*
-set directory=~/.vim/tmp/swap//
+if s:os != "windows"
+  set undodir=~/.vim/tmp/undo//
+  set backupdir=~/.vim/tmp/backup//
+  set backupskip=*/tmp/*
+  set directory=~/.vim/tmp/swap//
+else
+  set undodir=$VIM\vimfiles\tmp\undo\
+  set backupdir=$VIM\vimfiles\tmp\backup\
+  set noswapfile
+endif
 set backup
 set undofile
 set undolevels=1000
