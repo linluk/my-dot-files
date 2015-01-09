@@ -1,9 +1,10 @@
- " comment {{{1
+" comment {{{1
 " filename: ~/.vimrc  (on windows its $VIM/_vimrc)
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
 "
 " how to install vim plugins:
 "   apt-get install clang
+"   mkdir ~/.vim/tmp
 "   mkdir ~/.vim/tmp/backup
 "   mkdir ~/.vim/tmp/undo
 "   mkdir ~/.vim/tmp/swap
@@ -270,6 +271,7 @@ augroup myautocommandgroup
   " reload vimrc when saved (and refresh airline due to:
   "     <https://github.com/bling/vim-airline/issues/539> )
   autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
+  autocmd BufWritePost $MYVIMRC AirlineRefresh
 augroup END
 
 " mappings {{{1
@@ -330,6 +332,9 @@ vmap <expr> <C-j> DVB_Drag('down')
 vmap <expr> <C-k> DVB_Drag('up')
 vmap <expr> D DVB_Duplicate()
 
+" force my self to use o instead of A<CR>
+nnoremap A<CR> <nop>
+
 " open files {{{2
 " i often want to open my vimrc to look something up or to change something
 if s:os == "windows"
@@ -342,7 +347,13 @@ endif
 " use <space> to toggle fold under cursor
 nnoremap <SPACE> za
 " use <leader><space> to fold all except the current cursor position
-nnoremap <leader><space> zMzvzz
+nnoremap <leader><SPACE> zMzvzz
+" use Ctrl Space in normal mode to open all folds
+if has("gui_running")
+  nnoremap <C-SPACE> zR
+else
+  nnoremap <C-@> zR
+endif
 
 " gundo {{{2
 " TODO: install python 2.7 on windows and test again. (python3 didn't work)
@@ -365,4 +376,18 @@ noremap j gj
 noremap k gk
 noremap gj j
 noremap gk k
+
+" force myself to use hjkl!
+inoremap <Up>    <NOP>
+inoremap <Down>  <NOP>
+inoremap <Left>  <NOP>
+inoremap <Right> <NOP>
+nnoremap <Up>    <NOP>
+nnoremap <Down>  <NOP>
+nnoremap <Left>  <NOP>
+nnoremap <Right> <NOP>
+vnoremap <Up>    <NOP>
+vnoremap <Down>  <NOP>
+vnoremap <Left>  <NOP>
+vnoremap <Right> <NOP>
 
