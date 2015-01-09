@@ -1,5 +1,5 @@
  " comment {{{1
-" filename: .vimrc
+" filename: ~/.vimrc  (on windows its $VIM/_vimrc)
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
 "
 " how to install vim plugins:
@@ -13,12 +13,10 @@
 "   :PluginInstall
 " done.
 "
-" TODO :
-"   * make it compatible to my computer in the office.
-"     our f***ing IT blocks git WTF !!!
-"     need to be windows compatible.
-"     NOTE: i started to make it windows compatible, but i cant verify it
-"     today. lets do that tomorrow.
+" on windows: vundle didn't work for me.
+"   just add a plugin to the folder $VIM/vimfiles/bundle
+"   i ll set the rtp for you, but i cant run :helptags !
+"
 "
 
 " os {{{1
@@ -54,55 +52,48 @@ set nocompatible
 filetype plugin indent off
 syntax off
 
-" set the runtime path for vundle
+" load the plugins
 if s:os == "windows"
-  set rtp+=$VIM\vimfiles\bundle\Vundle.vim
+  " sadly i cannot use vundle on windows (due to proxy settings of the company
+  " they dont allow git --> WTF ?!
+  for s:entry in split(expand('$VIM/vimfiles/wtf/*'))
+    if isdirectory(s:entry)
+      execute 'set rtp+='.s:entry
+    endif
+  endfor
 else
-  set rtp+=~/.vim/bundle/Vundle.vim
-endif
+  " yes! i am not on windows. i am so happy !!
+  " have i mentioned that i don't like windows.
 
-" start vundle environment
-if s:os == "windows"
-  call vundle#begin($VIM . "\vimfiles\bundle")
-else
+  " anyways, set the runtimepath for vundle
+  set rtp+=~/.vim/bundle/Vundle.vim
+
+  " start vundle environment
   " the default is ~/.vim/bundle
   call vundle#begin()
-endif
 
-" list of plugins {{{2
-" let Vundle manage Vundle (this is required)
-Plugin 'gmarik/Vundle.vim'
+  " list of plugins {{{2
+  " let Vundle manage Vundle (this is required)
+  Plugin 'gmarik/Vundle.vim'
 
-" to install a plugin add it here and run :PluginInstall.
-" to update the plugins run :PluginInstall! or :PluginUpdate
-" to delete a plugin remove it here and run :PluginClean
-"
+  " to install a plugin add it here and run :PluginInstall.
+  " to update the plugins run :PluginInstall! or :PluginUpdate
+  " to delete a plugin remove it here and run :PluginClean
 
-if s:os != "windows"
-  " i dont do c on windows
   Plugin 'Rip-Rip/clang_complete'
   Plugin 'vim-scripts/CRefVim'
-endif
-" press and hold <leader> and type 'cr', 'cc' or 'cw' to open C Reference
-Plugin 'sjl/gundo.vim'
-Plugin 'jondkinney/dragvisuals.vim'
-Plugin 'bling/vim-airline'
-Plugin 'scrooloose/syntastic'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-session'
-Plugin 'flazz/vim-colorschemes'
+  Plugin 'sjl/gundo.vim'
+  Plugin 'jondkinney/dragvisuals.vim'
+  Plugin 'bling/vim-airline'
+  Plugin 'scrooloose/syntastic'
+  Plugin 'xolox/vim-misc'
+  Plugin 'xolox/vim-session'
+  Plugin 'flazz/vim-colorschemes'
 
-" to test my own plugins with vundle comment them in 'own plugin' section and
-" uncomment them here.
-"Plugin 'linluk/vim-websearch'
+  " add plugins before this
+  call vundle#end()
 
-" add plugins before this
-call vundle#end()
-
-" own plugins {{{2
-if s:os == "windows"
-  set rtp+=$VIM\vimfiles\own\vim-websearch
-else
+  " local plugins
   set rtp+=~/.vim/own/vim-websearch
 endif
 
@@ -129,7 +120,9 @@ let g:gundo_preview_bottom = 1
 " vim-websearch {{{2
 let g:web_search_engine = "google"
 if s:os == "windows"
-  let g:web_search_browser = "iexplorer.exe"
+  " TODO : fix windows incompatibility in the plugin!
+  "let g:web_search_command = "C:\\Program Files\ \(x86\)\\Google\\Chrome\\Application\\chrome.exe"
+  "let g:web_search_command = "C:\\Program Files\\Internet Explorer\\iexplore.exe"
 else
   let g:web_search_browser = "chromium"
 endif
@@ -159,25 +152,34 @@ let g:session_persist_colors = 0
 " delete trailing whites if there were added some by dragging by dragvisuals
 let g:DVB_TrimWS = 1
 
+" gui {{{1
+if has("gui_running")
+  set guifont=courier_new:h9
+  set lines=50
+  set columns=120
+  " i dont want/need the menu and toolbar or the scollbar.
+  set guioptions=
+endif
+
 " colors {{{1
 "enable 256 colors when in gnome-terminal (my debian machine)
 if $COLORTERM == 'gnome-terminal'
   set t_Co=256
+ " looks nice on my terminal, it keeps my transparent terminal background!
+
+  colorscheme slate
+else
+  colorscheme jelleybeans  " looks nice in gui.
 endif
 " try <http://bytefluent.com/vivify/> to test colorschemes
-colorscheme slate
-
-if has("gui_running")
-  set guifont=courier_new:h11:b
-endif
 
 " i want to highlight trailing whites
-hi TrailingWhitespace ctermbg=darkred ctermfg=darkred
+hi TrailingWhitespace ctermbg=darkred ctermfg=darkred guifg=darkred guibg=darkred
 call matchadd('TrailingWhitespace', '\s\+$')
 
 " i want to highlight lines longer than 80 chars in some way
 " TODO : i dont want to match it a linebreak (if i am exactly 80 chars long).
-hi ColorColumn80 ctermbg=darkmagenta ctermfg=white
+hi ColorColumn80 ctermbg=darkmagenta ctermfg=white guibg=darkmagenta guifg=white
 call matchadd('ColorColumn80', '\%81v')
 
 " some settings to highlight the current line and the linenumber
@@ -228,13 +230,13 @@ set cinoptions=l1
 if s:os != "windows"
   set undodir=~/.vim/tmp/undo//
   set backupdir=~/.vim/tmp/backup//
-  set backupskip=*/tmp/*
   set directory=~/.vim/tmp/swap//
 else
-  set undodir=$VIM\vimfiles\tmp\undo\
-  set backupdir=$VIM\vimfiles\tmp\backup\
-  set noswapfile
+  set undodir=$VIM/vimfiles/tmp/undo//
+  set backupdir=$VIM/vimfiles/tmp/backup//
+  set directory=$VIM/vimfiles/tmp/swap//
 endif
+set backupskip=*/tmp/*
 set backup
 set undofile
 set undolevels=1000
@@ -313,8 +315,13 @@ vnoremap <leader>w :WebSearchVisual<CR>
 " upper J joins 2 lines, so upper K should split them imho.
 nnoremap <silent> K i<CR><ESC>k$
 
-" <C-@> is <C-Space> in terminal mode! (used for autocompletion)
-inoremap <C-@> <C-x><C-u>
+" autocompletion
+if has("gui_running")
+  inoremap <C-SPACE> <C-x><C-u>
+else
+  " <C-@> is <C-Space> in terminal mode!
+  inoremap <C-@> <C-x><C-u>
+endif
 
 " mappings for dragvisuals plugin
 vmap <expr> <C-h> DVB_Drag('left')
@@ -325,7 +332,11 @@ vmap <expr> D DVB_Duplicate()
 
 " open files {{{2
 " i often want to open my vimrc to look something up or to change something
-nnoremap <leader>v :e ~/.vimrc<CR>
+if s:os == "windows"
+  nnoremap <leader>v :e $VIM/_vimrc<CR>
+else
+  nnoremap <leader>v :e ~/.vimrc<CR>
+endif
 
 " folding {{{2
 " use <space> to toggle fold under cursor
@@ -334,6 +345,7 @@ nnoremap <SPACE> za
 nnoremap <leader><space> zMzvzz
 
 " gundo {{{2
+" TODO: install python 2.7 on windows and test again. (python3 didn't work)
 nnoremap <leader>u :GundoToggle<CR>
 
 " navigation {{{2
