@@ -391,3 +391,9 @@ vnoremap <Down>  <NOP>
 vnoremap <Left>  <NOP>
 vnoremap <Right> <NOP>
 
+" misc {{{2
+" show the date and time when press <leader>dt
+if s:os != "windows"
+  nnoremap <leader>dt :echom substitute(system("date"), '\n$', '', 'g')<CR>
+endif
+
