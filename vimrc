@@ -336,7 +336,7 @@ vnoremap <leader>w :WebSearchVisual<CR>
 " linenumber, search for CHEATSHEETSTARTSHERE, go to next line, make this line
 " the top line of the buffer and jump back to the last window!
 " THIS IS AWESOME WOHOO !!
-nnoremap <leader>cs :botright 60 vnew ~/.vimcheatsheet<CR>:setlocal nocursorline nonumber<CR>gg/CHEATSHEETSTARTSHERE<CR>jzt<C-w><C-p>
+nnoremap <leader>cs :botright 60 vnew ~/.vimcheatsheet<CR>:setlocal nocursorline nonumber<CR>gg/CHEATSHEETSTARTSHERE<CR>:nohl<CR>jzt<C-w><C-p>
 
 " editing, modifying {{{2
 " upper J joins 2 lines, so upper K should split them imho.
