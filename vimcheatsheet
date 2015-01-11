@@ -1,0 +1,41 @@
+Filename: ~/.vimcheatsheet
+Author: <lukas42singer (at) gmail (dot) com>
+Date: 2015/01/11
+Copyright (C) 2015 Lukas Singer
+
+This is my vim cheat sheet.
+I Load this by Pressing <leader>cs in normal mode in vim.
+I automatically scroll down to the line "cheat sheet starts here" with no spaces between the words.
+So the lines before that are a good place for general comments.
+I open the cheatsheet window 60chars width, so you should keep your cheat sheet lines shorter than that.
+Your cheet sheet should always contain about 7 cheats. (Clean them up and add new ones from time to time!)
+I have this in my ~/.vimrc:
+  nnoremap <leader>cs :botright 60 vnew ~/.vimcheatsheet<CR>:setlocal nocursorline nonumber<CR>gg/CHEATSHEETSTARTSHERE<CR>jzt<C-w><C-p>
+
+CHEATSHEETSTARTSHERE
+
+  <leader>cs
+    open this cheatsheet! add new cheats!
+    delete cheats when you master them!
+    make sure to have always about 7 cheats!
+
+  Search and Replace
+    :%s/foo/bar/g    "replace foo with bar
+    :%s//bar/g       " replace last search with bar
+    :%s/foo/bar/gc   " replace foo with bar but ask
+
+  Use and add Abbreviations!
+
+  Use CapsLock instead of <C-c>
+
+  Use Gundo Plugin
+    <leader>u
+
+  H is PageDown
+  L is PageUp
+
+  Use <C-s to save a buffer.
+  Use <C-S> to save all buffers.
+
+  Use <leader>dt to display the date/time.
+

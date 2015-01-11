@@ -1,6 +1,7 @@
 " comment {{{1
 " filename: ~/.vimrc  (on windows its $VIM/_vimrc)
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
+" Copyright (C) 2015 Lukas Singer
 "
 " how to install vim plugins:
 "   apt-get install clang
@@ -217,6 +218,8 @@ set ignorecase
 " i want to use backspace like in any other editor
 set backspace=indent,eol,start
 set autoindent
+" try smartindent, do i like this?
+set smartindent
 set shiftwidth=2
 set softtabstop=2
 set expandtab
@@ -253,26 +256,41 @@ set autochdir
 " allow to switch buffers even if the current buffer is not yet written.
 set hidden
 
-" autocommands {{{1
-" when editing .vimrc it should be reloaded when saved
-" <https://github.com/bling/vim-airline/issues/539>
-"augroup reload_vimrc " {
-"  autocmd!
-"  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
-"  autocmd BufWritePost $MYVIMRC AirlineRefresh
-"augroup END " }
-"autocmd bufwritepost .vimrc source %
+" show list of completions and complete as much as possible
+set wildmode=list:longest
 
-augroup myautocommandgroup
-  " put autocommands in this autogroug and call 'autocmd!' to clear them
-  " otherwise reloading vimrc gets very slow after a few times because
-  " they never get cleared and so vimrc will be sourced multiple times.
+" autocommands {{{1
+
+augroup myvimrcstuff "{{{2
   autocmd!
   " reload vimrc when saved (and refresh airline due to:
   "     <https://github.com/bling/vim-airline/issues/539> )
   autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
   autocmd BufWritePost $MYVIMRC AirlineRefresh
 augroup END
+
+
+augroup mylatexstuff "{{{2
+  autocmd!
+  " replace umlauts in latex
+  " i use mapping for this, because i want to replace them always not only
+  " when they are a single char (thats what iabbrev does).
+  autocmd Filetype tex,latex inoremap <buffer> ü {\"u}
+  autocmd Filetype tex,latex inoremap <buffer> Ü {\"U}
+  autocmd Filetype tex,latex inoremap <buffer> ä {\"a}
+  autocmd Filetype tex,latex inoremap <buffer> Ä {\"A}
+  autocmd Filetype tex,latex inoremap <buffer> ö {\"o}
+  autocmd Filetype tex,latex inoremap <buffer> Ö {\"O}
+  autocmd Filetype tex,latex inoremap <buffer> ß {\ss}
+augroup END
+
+" abbreviations {{{1
+" f.e. type <@><@><space> in insert mode and it get replaced by
+"   < lukas42singer (at) gmail (dot) com >
+inoreabbrev (f) <C-R>=expand("%:t")<CR>
+inoreabbrev @@ <lukas42singer (at) gmail (dot) com>
+inoreabbrev (c) Copyright (C) <C-R>=strftime("%Y")<CR> Lukas Singer
+inoreabbrev (d) <C-R>=strftime("%Y/%m/%d")<CR>
 
 " mappings {{{1
 
@@ -312,6 +330,13 @@ nnoremap <leader>m K
 nnoremap <leader>w :WebSearchCursor<CR>
 " search for selection in visual mode
 vnoremap <leader>w :WebSearchVisual<CR>
+
+" open my cheatsheat
+" open the cheatsheet in a new window on the right, turn of cursorline and
+" linenumber, search for CHEATSHEETSTARTSHERE, go to next line, make this line
+" the top line of the buffer and jump back to the last window!
+" THIS IS AWESOME WOHOO !!
+nnoremap <leader>cs :botright 60 vnew ~/.vimcheatsheet<CR>:setlocal nocursorline nonumber<CR>gg/CHEATSHEETSTARTSHERE<CR>jzt<C-w><C-p>
 
 " editing, modifying {{{2
 " upper J joins 2 lines, so upper K should split them imho.
@@ -377,6 +402,10 @@ noremap k gk
 noremap gj j
 noremap gk k
 
+" use H as page down and L as page up.
+noremap H <PageDown>zz
+noremap L <PageUp>zz
+
 " force myself to use hjkl!
 inoremap <Up>    <NOP>
 inoremap <Down>  <NOP>
@@ -392,8 +421,20 @@ vnoremap <Left>  <NOP>
 vnoremap <Right> <NOP>
 
 " misc {{{2
-" show the date and time when press <leader>dt
 if s:os != "windows"
+" show the date and time when press <leader>dt
   nnoremap <leader>dt :echom substitute(system("date"), '\n$', '', 'g')<CR>
 endif
+
+" use <C-s> to save a file. ctrl-s doesnt work in terminals by default.
+" add the following line to ~/.bashrc
+"   stty stop undef
+" this disables the handling of ctrl-s by the terminal.
+inoremap <C-s> <esc>:w<CR>a
+vnoremap <C-s> <esc>:w<CR>gv
+nnoremap <C-s> :w<CR>
+" use ctrl-shift-s to save all files.
+inoremap <C-S> <esc>:wa<CR>a
+vnoremap <C-S> <esc>:wa<CR>gv
+nnoremap <C-S> :wa<CR>
 
