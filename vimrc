@@ -291,6 +291,17 @@ inoreabbrev (f) <C-R>=expand("%:t")<CR>
 inoreabbrev @@ <lukas42singer (at) gmail (dot) com>
 inoreabbrev (c) Copyright (C) <C-R>=strftime("%Y")<CR> Lukas Singer
 inoreabbrev (d) <C-R>=strftime("%Y/%m/%d")<CR>
+inoreabbrev (l) This file is part of [PROGRAM].<CR><CR>
+      \[PROGRAM] is free software: you can redistribute it and/or modify<CR>
+      \it under the terms of the GNU General Public License as published by<CR>
+      \the Free Software Foundation, either version 3 of the License, or<CR>
+      \(at your option) any later version.<CR><CR>
+      \[PROGRAM] is distributed in the hope that it will be useful,<CR>
+      \but WITHOUT ANY WARRANTY; without even the implied warranty of<CR>
+      \MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the<CR>
+      \GNU General Public License for more details.<CR><CR>
+      \You should have received a copy of the GNU General Public License<CR>
+      \along with 'qpl'.  If not, see <http://www.gnu.org/licenses/>.<CR>
 
 " mappings {{{1
 
@@ -438,3 +449,7 @@ inoremap <C-S> <esc>:wa<CR>a
 vnoremap <C-S> <esc>:wa<CR>gv
 nnoremap <C-S> :wa<CR>
 
+" commands {{{1
+" use :wm for :write + :make
+command! WM write | make
+cnoreabbrev wm WM
