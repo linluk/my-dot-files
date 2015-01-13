@@ -1,3 +1,31 @@
+## COMMENT ## {{{1
+# Author: <lukas42singer (at) gmail (dot) com>
+# Filename: ~/.bashrc
+# Description: this is my .bashrc file, it contains the default
+#              debian settings plus my personal settings.  feel
+#              free to copy the file or parts of it.  don't blame
+#              me if it doesn't fit your needs.
+#
+# My .bashrc is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# My .bashrc is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with my .bashrc.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+### THIS IS THE DEFAULT CONFIGURATION ### {{{1
+### SOME OF THESE SETTINGS GET OVERWRITTEN
+### IN THE SECTION OF MY PERSONAL SETTINGS
+### BELOW.  BUT I KEEP THEM AS REFERENCE.
+###########################################
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -76,29 +104,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-alias ll='ls -lh'
-alias la='ls -A'
-alias lla='ls -lah'
-#alias l='ls -CF'
-
-# some cd aliases
-alias ..='cd ..'
-alias ....='cd ../..'
-alias ......='cd ../../..'
-
-# some vim aliases
-#alias vim='vim -p'
-#alias gvim='gvim -p'
-# i dont need them anymore, --> i use buffers now instead of tabs!
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -120,7 +127,52 @@ if ! shopt -oq posix; then
   fi
 fi
 
+### MY CONFIGURATION STARTS HERE ### {{{1
+
+## functions {{{2
+
+cond_add_path() {  #{{{3
+  # conditionally add to path variable
+  # adds the first argument to the path
+  # if it is a directory
+  if [ -d $1 ]; then  # if directory exists
+    if [[ ":$PATH:" != *":$1:"* ]]; then  # if directory is not allready in path
+      PATH=$PATH:$1
+    fi
+  fi
+}
+
+## basic settings {{{2
+
+# allows /**/ to complete optional nested directorys.
+# f.e:  ~$ dev/**/*.py will find all *.py files in all
+# in ~/dev/ and all of its subdirectorys.
+shopt -s globstar
+
 # disable <C-s> in terminal so that i can use it in vim
 stty stop undef
 
-PATH=$PATH:/opt/bin
+## aliases {{{2
+
+alias ll='ls -lh'
+alias la='ls -A'
+alias lla='ls -lah'
+
+alias ..='cd ..'
+alias ....='cd ../..'
+alias ......='cd ../../..'
+
+alias sb='source ~/.bashrc'
+
+alias cl='clear'
+
+alias dt='date'
+
+alias apt-get='sudo apt-get'
+
+## env settings {{{2
+cond_add_path /opt/bin
+cond_add_path $HOME/bin
+
+## prompt {{{2
+PS1=' \w \$ '
