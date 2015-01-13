@@ -12,7 +12,7 @@
 dir=~/my-dot-files              # my-dot-files directory
 old=~/.my-dot-files_OLD         # backup directory
 # list of files/folders to link in the home dir
-files="vimrc muttrc vimcheatsheet"
+files="vimrc muttrc vimcheatsheet bashrc"
 
 echo "creating backup directory ($old) ..."
 mkdir -p $old
