@@ -193,6 +193,9 @@ hi CursorLineNr ctermbg=black
 " options {{{1
 " spelling {{{2
 set spelllang=de,en
+if s:os != "windows"
+  set spellfile=~/.vim/spell/linluk.utf-8.add
+endif
 
 " linenumbers & cursorline {{{2
 set number
@@ -284,6 +287,12 @@ augroup mylatexstuff "{{{2
   autocmd Filetype tex,latex inoremap <buffer> ß {\ss}
 augroup END
 
+augroup myhelpstuff "{{{2
+  autocmd!
+  " open help in a vertical split window
+  autocmd Filetype help call CurrentWindowToRightMost()
+augroup END
+
 " abbreviations {{{1
 " f.e. type <@><@><space> in insert mode and it get replaced by
 "   < lukas42singer (at) gmail (dot) com >
@@ -361,8 +370,19 @@ vmap <expr> D DVB_Duplicate()
 " force my self to use o instead of A<CR>
 nnoremap A<CR> <nop>
 
+" spelling {{{2
+
+" toggle spell
+nnoremap <leader>s :setlocal spell! spelllang=de,en<cr>
+" suggest spelling (its just so much easier to type!)
+nnoremap z0 z=
+" next/previous mistake
+" they hide fold none and fold normal!
+nnoremap zn ]s
+nnoremap zN ]s
+
 " open files {{{2
-" i often want to open my vimrc to look something up or to change something
+" I often want to open my vimrc to look something up or to change something
 if s:os == "windows"
   nnoremap <leader>v :e $VIM/_vimrc<CR>
 else
@@ -374,11 +394,11 @@ endif
 nnoremap <SPACE> za
 " use <leader><space> to fold all except the current cursor position
 nnoremap <leader><SPACE> zMzvzz
-" use Ctrl Space in normal mode to open all folds
+" use Ctrl Space in normal mode to kind of toggle all folds
 if has("gui_running")
-  nnoremap <C-SPACE> zR
+  nnoremap <C-SPACE> zi
 else
-  nnoremap <C-@> zR
+  nnoremap <C-@> zi
 endif
 
 " gundo {{{2
@@ -427,10 +447,10 @@ if s:os != "windows"
   nnoremap <leader>dt :echom substitute(system("date"), '\n$', '', 'g')<CR>
 endif
 
-" use <C-s> to save a file. ctrl-s doesnt work in terminals by default.
+" use <C-s> to save a file. ctrl-s doesn't work in terminals by default.
 " add the following line to ~/.bashrc
 "   stty stop undef
-" this disables the handling of ctrl-s by the terminal.
+" this disables the handling of Ctrl-s by the terminal.
 inoremap <C-s> <esc>:w<CR>a
 vnoremap <C-s> <esc>:w<CR>gv
 nnoremap <C-s> :w<CR>
@@ -446,7 +466,7 @@ cnoreabbrev wm WM
 
 " functions {{{1
 
-function! AddGpl3License()
+function! AddGpl3License() "{{{2
   let l:progname = input("program to create the license for?\n")
   while l:progname == ""
     let l:progname = input("")
@@ -466,3 +486,11 @@ function! AddGpl3License()
   return l:license
 endfunction
 
+function! CurrentWindowToRightMost() "{{{2
+  " i use this in an autocmd for help.
+  if !exists("w:is_right")
+    wincmd L
+    vertical resize 80
+    let w:is_right = 1
+  endif
+endfunction
