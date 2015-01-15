@@ -143,42 +143,36 @@ cond_add_path() {  #{{{3
 }
 
 batt_stat_for_ps1() { #{{{3
-  BATTERY=/sys/class/power_supply/BAT1
-  ACAD=/sys/class/power_supply/ACAD
+  local BATTERY=/sys/class/power_supply/BAT1
 
-  # calc the percentage of battery
-  CHRG=`echo $(($(cat $BATTERY/energy_now)*100 / $(cat $BATTERY/energy_full)))`
-  # trim it to 100% if it is greater than 99
-  if [ "$CHRG" -gt "99" ]; then
-    CHRG=100
+  if [ -d $BATTERY ]; then
+    # calc the percentage of battery
+    local CHRG=`echo $(($(cat $BATTERY/energy_now)*100 / $(cat $BATTERY/energy_full)))`
+    # trim it to 100% if it is greater than 99
+    if [ "$CHRG" -gt "99" ]; then
+      local CHRG=100
+    fi
+
+    # get the status of the battery
+    case "$(cat $BATTERY/status)" in
+      [Ff]ull)
+        local BATSTT="="
+        ;;
+      [Cc]harging)
+        local BATSTT="+"
+        ;;
+      [Dd]ischarging)
+        local BATSTT="-"
+        ;;
+      *)
+        local BATSTT="?"
+        ;;
+    esac
+
+    echo -e "[$CHRG%$BATSTT]"
+  else
+    echo -e ""
   fi
-
-  # get the status of the battery
-  case "$(cat $BATTERY/status)" in
-    [Cc]harged)
-      BATSTT="="
-      ;;
-    [Cc]harging)
-      BATSTT="+"
-      ;;
-    [Dd]ischarging)
-      BATSTT="-"
-      ;;
-    [Uu]nknown)
-      # if status is "Unknown" (this is sometimes when fully charged (afaik))
-      # try to get the the AC status.
-      if [ $(cat $ACAD/online) -eq 1 ]; then
-        BATSTT="="
-      else
-        BATSTT="?"
-      fi
-      ;;
-    *)
-      BATSTT="?"
-      ;;
-  esac
-
-  echo -e "[$CHRG%$BATSTT]"
 }
 
 
