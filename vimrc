@@ -168,10 +168,13 @@ endif
 if $COLORTERM == 'gnome-terminal'
   set t_Co=256
  " looks nice on my terminal, it keeps my transparent terminal background!
-
   colorscheme slate
 else
-  colorscheme jelleybeans  " looks nice in gui.
+  if has("gui_running")
+    colorscheme jelleybeans  " looks nice in gui.
+  else
+    colorscheme default
+  endif
 endif
 " try <http://bytefluent.com/vivify/> to test colorschemes
 
