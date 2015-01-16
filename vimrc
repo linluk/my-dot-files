@@ -17,7 +17,8 @@
 "
 " on windows: vundle didn't work for me.
 "   just add a plugin to the folder $VIM/vimfiles/bundle
-"   i ll set the rtp for you, but i cant run :helptags !
+"   i ll set the rtp for you, but i cant run :helptags automatically!
+"   (or can i?)
 "
 "
 
@@ -267,12 +268,15 @@ set wildmode=list:longest
 
 " autocommands {{{1
 
+" see: https://github.com/bling/vim-airline/issues/539#issuecomment-70247140
+command! AirlineForceRefresh call airline#load_theme() | call airline#update_statusline() | call airline#load_theme() | call airline#update_statusline()
 augroup myvimrcstuff "{{{2
   autocmd!
   " reload vimrc when saved (and refresh airline due to:
   "     <https://github.com/bling/vim-airline/issues/539> )
-  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
-  autocmd BufWritePost $MYVIMRC AirlineRefresh
+"  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
+"  autocmd BufWritePost $MYVIMRC AirlineRefresh
+  autocmd BufwritePost $MYVIMRC source $MYVIMRC | AirlineForceRefresh
 augroup END
 
 
