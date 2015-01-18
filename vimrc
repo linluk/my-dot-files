@@ -83,6 +83,9 @@ else
   " to update the plugins run :PluginInstall! or :PluginUpdate
   " to delete a plugin remove it here and run :PluginClean
 
+  " clang_complete bug workaround:
+  "   cd to clang_complete
+  "   $  git checkout 6a7ad82
   Plugin 'Rip-Rip/clang_complete'
   Plugin 'vim-scripts/CRefVim'
   Plugin 'sjl/gundo.vim'
@@ -137,6 +140,7 @@ let g:airline#extensions#tabline#enabled=1
 
 " clang_complete {{{2
 let g:clang_complete_auto=0  " I can start the autocompletion myself, thanks..
+
 " let g:clang_snippets=1     " use a snippet engine for placeholders
 " let g:clang_snippets_engine='ultisnips'
 " let g:clang_auto_select=2  " automatically select and insert the first match
