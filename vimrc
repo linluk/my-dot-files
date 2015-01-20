@@ -336,7 +336,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <silent> <CR> :nohl<CR><CR>
 
 " make the cursor stay where it is when using the * command
-nnoremap <silent> * *N
+nnoremap <silent> * *Nzz
 
 " :help, man & websearch {{{2
 " i want to use <leader>h for lookup the current word in the vim help
