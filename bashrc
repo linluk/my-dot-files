@@ -204,6 +204,8 @@ alias dt='date'
 
 alias apt-get='sudo apt-get'
 
+alias md='mkdir -p'
+
 ## env settings {{{2
 cond_add_path /opt/bin
 cond_add_path $HOME/bin
