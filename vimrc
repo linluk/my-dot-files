@@ -549,8 +549,7 @@ if has("gui_running")
     endif
   endfunction
 
-  function!
-    ScreenSave()
+  function! ScreenSave()
     " Save window size and position.
     if has("gui_running") && g:screen_size_restore_pos
       let vim_instance = (g:screen_size_by_vim_instance==1?(v:servername):'GVIM')
