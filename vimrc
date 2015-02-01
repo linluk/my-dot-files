@@ -375,6 +375,12 @@ else
   inoremap <C-@> <C-x><C-u>
 endif
 
+" remove trailing whitespaces of current line when insert linebreak
+inoremap <CR> <CR><ESC>k:s/\s\+$//e<CR>jI
+
+" indent hole buffer when pressed =
+nnoremap = gg=G'`
+
 " mappings for dragvisuals plugin
 vmap <expr> <C-h> DVB_Drag('left')
 vmap <expr> <C-l> DVB_Drag('right')
