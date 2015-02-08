@@ -482,7 +482,7 @@ nnoremap <C-S> :wa<CR>
 
 " commands {{{1
 " use :wm for :write + :make
-command! WM write | make
+command! WM wall | make
 cnoreabbrev wm WM
 
 " functions {{{1
