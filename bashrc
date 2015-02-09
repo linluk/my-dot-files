@@ -137,7 +137,7 @@ cond_add_path() {  #{{{3
   # if it is a directory
   if [ -d $1 ]; then  # if directory exists
     if [[ ":$PATH:" != *":$1:"* ]]; then  # if directory is not allready in path
-      PATH=$PATH:$1
+      PATH=$1:$PATH
     fi
   fi
 }
@@ -209,6 +209,8 @@ alias md='mkdir -p'
 ## env settings {{{2
 cond_add_path /opt/bin
 cond_add_path $HOME/bin
+cond_add_path /usr/src/linux-headers-$(uname -r)
 
 ## prompt {{{2
-PS1=' $(batt_stat_for_ps1) \w \$ '
+#PS1=' $(batt_stat_for_ps1) \w \$ '
+PS1=' \w \$ '
