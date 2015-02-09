@@ -112,6 +112,8 @@ syntax on
 " here are settings for my plugins.
 " see fold area 'plugins' for a list of plugins.
 
+" syntastic {{{2
+let g:syntastic_c_include_dirs = [ '/usr/src/linux-headers-3.2.0-4-common/include' ]
 " gundo {{{2
 " i want the preview window under my file, not under the undo tree.
 " like this:          not like this (default):
@@ -199,6 +201,8 @@ hi LineNr ctermbg=black
 hi CursorLineNr ctermbg=black
 
 " options {{{1
+" path {{{2
+set path+=/usr/src/linux-headers-3.2.0-4-common/include
 " encoding {{{2
 set encoding=utf-8
 set fileencoding=utf-8
