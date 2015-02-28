@@ -11,6 +11,8 @@
 #   set smtp_url = "smtp://foo.bar@smtp.gmail.com:587/"
 #   set smtp_pass = "PaSsWoRd"
 #
+# you need 'abook' installed to use the addressbook
+#
 
 ## SOURCE .mutt_local (passwords, login names, ...)
 source ~/.mutt_local
@@ -42,4 +44,9 @@ set sort_aux = last-date-received
 
 ## Set editor to create new email
 set editor='vim'
+
+## Configure 'abook' (The AddressBook)
+set query_command="abook --mutt-query '%s'"
+#macro index a     "|abook --add-email\n" 'add sender to abook'
+#macro pager a     "|abook --add-email\n" 'add sender to abook'
 
