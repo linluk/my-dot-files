@@ -95,6 +95,7 @@ else
   Plugin 'xolox/vim-misc'
   Plugin 'xolox/vim-session'
   Plugin 'flazz/vim-colorschemes'
+  Plugin 'davidhalter/jedi-vim'
 
   " add plugins before this
   call vundle#end()
@@ -161,6 +162,24 @@ let g:session_persist_colors = 0
 " delete trailing whites if there were added some by dragging by dragvisuals
 let g:DVB_TrimWS = 1
 
+" vim-jedi {{{2
+" i can start completion myself!
+let g:jedi#popup_on_dot = 0
+" and i dont want you to select the first item
+let g:jedi#popup_select_first = 0
+
+"
+let g:jedi#show_call_signatures = "1"
+
+let g:jedi#goto_assignments_command = "<C-i>"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = ""
+let g:jedi#usages_command = ""
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = ""
+
+autocmd FileType python setlocal completeopt-=preview
+
 " gui {{{1
 if has("gui_running")
   set guifont=courier_new:h9
@@ -219,7 +238,7 @@ set numberwidth=6
 set cursorline
 
 " completion & popups {{{2
-set pumheight=25             " so the complete menu doesn't get too big
+set pumheight=30             " so the complete menu doesn't get too big
 set completeopt=menu,longest " menu, menuone, longest and preview
 
 " interface {{{2
@@ -380,7 +399,7 @@ else
 endif
 
 " remove trailing whitespaces of current line when insert linebreak
-inoremap <CR> <CR><ESC>k:s/\s\+$//e<CR>jI
+"inoremap <CR> <CR><ESC>k:s/\s\+$//e<CR>jI
 
 " indent hole buffer when pressed =
 nnoremap = gg=G'`
