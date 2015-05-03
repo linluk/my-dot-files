@@ -143,6 +143,7 @@ let g:airline#extensions#tabline#enabled=1
 
 " clang_complete {{{2
 let g:clang_complete_auto=0  " I can start the autocompletion myself, thanks..
+let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
 
 " let g:clang_snippets=1     " use a snippet engine for placeholders
 " let g:clang_snippets_engine='ultisnips'
@@ -191,7 +192,8 @@ endif
 
 " colors {{{1
 "enable 256 colors when in gnome-terminal (my debian machine)
-if $COLORTERM == 'gnome-terminal'
+"if $COLORTERM == 'gnome-terminal'
+if s:os == "debian"
   set t_Co=256
  " looks nice on my terminal, it keeps my transparent terminal background!
   colorscheme slate
