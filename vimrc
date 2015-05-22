@@ -333,6 +333,11 @@ augroup myhelpstuff "{{{2
   autocmd Filetype help call CurrentWindowToRightMost()
 augroup END
 
+augroup mycssstuff "{{{2
+  autocmd!
+  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+augroup END
+
 " abbreviations {{{1
 " f.e. type <@><@><space> in insert mode and it get replaced by
 "   < lukas42singer (at) gmail (dot) com >
@@ -341,6 +346,8 @@ inoreabbrev @@ <lukas42singer (at) gmail (dot) com>
 inoreabbrev (c) Copyright (C) <C-R>=strftime("%Y")<CR> Lukas Singer
 inoreabbrev (d) <C-R>=strftime("%Y/%m/%d")<CR>
 inoreabbrev (l) <C-R>=AddGpl3License()<CR>
+inoreabbrev (c-header) <C-R>=AddCHeader()<CR>
+inoreabbrev #i #include
 
 " mappings {{{1
 
@@ -530,6 +537,15 @@ function! AddGpl3License() "{{{2
       \"You should have received a copy of the GNU General Public License\n" .
       \"along with " . l:progname . ".  If not, see <http://www.gnu.org/licenses/>.\n"
   return l:license
+endfunction
+
+function! AddCHeader() "{{{2
+  let l:def = "__" . toupper(substitute(expand("%:t"), '\.', "_", "")) . "__"
+  let l:header =
+    \ "#ifndef " . l:def . "\n" .
+    \ "#define " . l:def . "\n\n\n" .
+    \ "#endif /* " . l:def . " */"
+  return l:header
 endfunction
 
 function! CurrentWindowToRightMost() "{{{2

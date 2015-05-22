@@ -183,6 +183,9 @@ batt_stat_for_ps1() { #{{{3
 # in ~/dev/ and all of its subdirectorys.
 shopt -s globstar
 
+# use autocd (it looks a bit anoying, but it is good to use!)
+shopt -s autocd
+
 # disable <C-s> in terminal so that i can use it in vim
 stty stop undef
 
