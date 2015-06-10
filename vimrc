@@ -338,6 +338,14 @@ augroup mycssstuff "{{{2
   autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 augroup END
 
+augroup mypythonstuff "{{{2
+  autocmd!
+  autocmd FileType python set smartindent
+  autocmd FileType python set shiftwidth=2
+  autocmd FileType python set softtabstop=2
+  autocmd FileType python set expandtab
+augroup END
+
 " abbreviations {{{1
 " f.e. type <@><@><space> in insert mode and it get replaced by
 "   < lukas42singer (at) gmail (dot) com >
@@ -422,6 +430,9 @@ vmap <expr> D DVB_Duplicate()
 
 " force my self to use o instead of A<CR>
 nnoremap A<CR> <nop>
+
+" let ~ toggle case of whole words
+nnoremap ~ bve~
 
 " spelling {{{2
 
