@@ -175,6 +175,11 @@ batt_stat_for_ps1() { #{{{3
   fi
 }
 
+mkdir_and_cd() { #{{{3
+  mkdir -p $1
+  cd $1
+}
+
 
 ## basic settings {{{2
 
@@ -208,6 +213,8 @@ alias dt='date'
 alias apt-get='sudo apt-get'
 
 alias md='mkdir -p'
+
+alias mdcd='mkdir_and_cd'
 
 ## env settings {{{2
 cond_add_path /opt/bin
