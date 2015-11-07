@@ -30,6 +30,8 @@ elseif has("unix")
   let s:uname = system("uname -a")
   if s:uname =~ "Debian"
     let s:os = "debian"
+  elseif s:uname =~ "Ubuntu"
+    let s:os = "ubuntu"
   else
     let s:os = "unix"
   endif
@@ -115,6 +117,8 @@ syntax on
 
 " syntastic {{{2
 let g:syntastic_c_include_dirs = [ '/usr/src/linux-headers-3.2.0-4-common/include' ]
+let g:syntastic_python_checkers = ['python']
+
 " gundo {{{2
 " i want the preview window under my file, not under the undo tree.
 " like this:          not like this (default):
@@ -143,7 +147,7 @@ let g:airline#extensions#tabline#enabled=1
 
 " clang_complete {{{2
 let g:clang_complete_auto=0  " I can start the autocompletion myself, thanks..
-let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
+let g:clang_library_path="/usr/lib/llvm-3.6/lib/libclang.so.1"
 
 " let g:clang_snippets=1     " use a snippet engine for placeholders
 " let g:clang_snippets_engine='ultisnips'
@@ -178,6 +182,8 @@ let g:jedi#documentation_command = ""
 let g:jedi#usages_command = ""
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = ""
+"""let g:jedi#force_py_version = 3
+let g:jedi#auto_vim_configuration = 0
 
 autocmd FileType python setlocal completeopt-=preview
 
@@ -197,6 +203,8 @@ if s:os == "debian"
   set t_Co=256
  " looks nice on my terminal, it keeps my transparent terminal background!
   colorscheme slate
+elseif s:os == "ubuntu"
+  colorscheme jellybeans
 else
   if has("gui_running")
     colorscheme jelleybeans  " looks nice in gui.
@@ -258,8 +266,8 @@ set ignorecase
 " i want to use backspace like in any other editor
 set backspace=indent,eol,start
 set autoindent
-" try smartindent, do i like this?
-set smartindent
+" try cindent, do i like this?
+set cindent
 set shiftwidth=2
 set softtabstop=2
 set expandtab
@@ -340,10 +348,11 @@ augroup END
 
 augroup mypythonstuff "{{{2
   autocmd!
-  autocmd FileType python set smartindent
-  autocmd FileType python set shiftwidth=2
-  autocmd FileType python set softtabstop=2
+  autocmd FileType python set cindent
+  autocmd FileType python set shiftwidth=4
+  autocmd FileType python set softtabstop=4
   autocmd FileType python set expandtab
+  autocmd FileType python set omnifunc=jedi#completions
 augroup END
 
 " abbreviations {{{1
