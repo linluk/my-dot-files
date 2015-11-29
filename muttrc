@@ -11,6 +11,8 @@
 #   set smtp_url = "smtp://foo.bar@smtp.gmail.com:587/"
 #   set smtp_pass = "PaSsWoRd"
 #
+# the file should have 600 rights!
+#
 # you need 'abook' installed to use the addressbook
 #
 
@@ -22,7 +24,6 @@ set realname = "Lukas Singer"
 
 ## REMOTE GMAIL FOLDERS
 set folder = "imaps://imap.gmail.com:993"
-#set spoolfile = "+INBOX"
 set spoolfile = imaps://imap.gmail.com:993/INBOX
 set postponed ="+[Google Mail]/Drafts"
 set trash = "+[Google Mail]/Trash"
