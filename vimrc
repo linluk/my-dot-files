@@ -94,6 +94,7 @@ else
   Plugin 'jondkinney/dragvisuals.vim'
   Plugin 'bling/vim-airline'
   Plugin 'scrooloose/syntastic'
+  Plugin 'scrooloose/nerdcommenter'
   Plugin 'xolox/vim-misc'
   Plugin 'xolox/vim-session'
   Plugin 'flazz/vim-colorschemes'
