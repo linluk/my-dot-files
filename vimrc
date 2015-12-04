@@ -100,11 +100,12 @@ else
   Plugin 'flazz/vim-colorschemes'
   Plugin 'davidhalter/jedi-vim'
 
+  " my own plugins
+  Plugin 'linluk/vim-websearch'
+
   " add plugins before this
   call vundle#end()
 
-  " local plugins
-  set rtp+=~/.vim/own/vim-websearch
 endif
 
 " filetype syntax {{{1
@@ -138,7 +139,7 @@ if s:os == "windows"
   "let g:web_search_command = "C:\\Program Files\ \(x86\)\\Google\\Chrome\\Application\\chrome.exe"
   "let g:web_search_command = "C:\\Program Files\\Internet Explorer\\iexplore.exe"
 else
-  let g:web_search_browser = "chromium"
+  let g:web_search_browser = "lynx"
 endif
 
 
