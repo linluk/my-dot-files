@@ -355,6 +355,7 @@ augroup mypythonstuff "{{{2
   autocmd FileType python set softtabstop=4
   autocmd FileType python set expandtab
   autocmd FileType python set omnifunc=jedi#completions
+  autocmd FileType python map <F5> <ESC>:w<CR>:!python % <CR>
 augroup END
 
 " abbreviations {{{1
