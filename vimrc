@@ -79,7 +79,7 @@ else
 
   " list of plugins {{{2
   " let Vundle manage Vundle (this is required)
-  Plugin 'gmarik/Vundle.vim'
+  Plugin 'VundleVim/Vundle.vim'
 
   " to install a plugin add it here and run :PluginInstall.
   " to update the plugins run :PluginInstall! or :PluginUpdate
@@ -358,6 +358,16 @@ augroup mypythonstuff "{{{2
   autocmd FileType python map <F5> <ESC>:w<CR>:!python % <CR>
 augroup END
 
+augroup mycstuff "{{{2
+  autocmd!
+  autocmd FileType c map <F5> <ESC>:wa<CR>:make<CR>
+augroup END
+
+augroup mymdstuff "{{{2
+  autocmd!
+  autocmd FileType markdown set textwidth=80
+augroup END
+
 " abbreviations {{{1
 " f.e. type <@><@><space> in insert mode and it get replaced by
 "   < lukas42singer (at) gmail (dot) com >
@@ -368,6 +378,7 @@ inoreabbrev (d) <C-R>=strftime("%Y/%m/%d")<CR>
 inoreabbrev (l) <C-R>=AddGpl3License()<CR>
 inoreabbrev (c-header) <C-R>=AddCHeader()<CR>
 inoreabbrev #i #include
+inoreabbrev #d #define
 
 " mappings {{{1
 
