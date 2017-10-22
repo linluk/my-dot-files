@@ -1,10 +1,9 @@
 " comment {{{1
 " filename: ~/.vimrc  (on windows its $VIM/_vimrc)
 " author: lukas singer <lukas42singer (at) gmail (dot) com>
-" Copyright (C) 2015 Lukas Singer
+" Copyright (C) 2016 Lukas Singer
 "
 " how to install vim plugins:
-"   apt-get install clang
 "   mkdir ~/.vim/tmp
 "   mkdir ~/.vim/tmp/backup
 "   mkdir ~/.vim/tmp/undo
@@ -43,7 +42,6 @@ if s:os == "debian"
   runtime! debian.vim
 endif
 
-" windows {{{2
 
 
 
@@ -85,18 +83,9 @@ else
   " to update the plugins run :PluginInstall! or :PluginUpdate
   " to delete a plugin remove it here and run :PluginClean
 
-  " clang_complete bug workaround:
-  "   cd to clang_complete
-  "   $  git checkout 6a7ad82
-  Plugin 'Rip-Rip/clang_complete'
-  Plugin 'vim-scripts/CRefVim'
-  Plugin 'sjl/gundo.vim'
   Plugin 'jondkinney/dragvisuals.vim'
-  Plugin 'bling/vim-airline'
-  Plugin 'scrooloose/syntastic'
-  Plugin 'scrooloose/nerdcommenter'
+  "Plugin 'bling/vim-airline'
   Plugin 'xolox/vim-misc'
-  Plugin 'xolox/vim-session'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'davidhalter/jedi-vim'
 
@@ -117,21 +106,6 @@ syntax on
 " here are settings for my plugins.
 " see fold area 'plugins' for a list of plugins.
 
-" syntastic {{{2
-let g:syntastic_c_include_dirs = [ '/usr/src/linux-headers-3.2.0-4-common/include' ]
-let g:syntastic_python_checkers = ['python']
-
-" gundo {{{2
-" i want the preview window under my file, not under the undo tree.
-" like this:          not like this (default):
-"   +-+-------+         +-+-------+
-"   |g| file  |         |g| file  |
-"   |g|       |         |g|       |
-"   |g+-------+         +-+       |
-"   |g|preview|         |p|       |
-"   +-+-------+         +-+-------+
-"
-let g:gundo_preview_bottom = 1
 " vim-websearch {{{2
 let g:web_search_engine = "google"
 if s:os == "windows"
@@ -145,25 +119,7 @@ endif
 
 " vim-airline {{{2
 " i want to use the airline tabs
-let g:airline#extensions#tabline#enabled=1
-
-" clang_complete {{{2
-let g:clang_complete_auto=0  " I can start the autocompletion myself, thanks..
-let g:clang_library_path="/usr/lib/llvm-3.8/lib/libclang.so.1"
-
-" let g:clang_snippets=1     " use a snippet engine for placeholders
-" let g:clang_snippets_engine='ultisnips'
-" let g:clang_auto_select=2  " automatically select and insert the first match
-
-" vim-session {{{2
-" i want to autosave the last session as 'default'
-let g:session_autosave = 'yes'
-" but i dont want to restore the last session automaticaly
-let g:session_autoload = 'no'
-" every instance of vim should overwrite the default session when closed.
-let g:session_default_overwrite = 1
-" i dont need my colorsettings saved to the session.
-let g:session_persist_colors = 0
+"let g:airline#extensions#tabline#enabled=1
 
 " dragvisuals.vim {{{2
 " delete trailing whites if there were added some by dragging by dragvisuals
@@ -201,20 +157,20 @@ endif
 " colors {{{1
 "enable 256 colors when in gnome-terminal (my debian machine)
 "if $COLORTERM == 'gnome-terminal'
-if s:os == "debian"
-  set t_Co=256
- " looks nice on my terminal, it keeps my transparent terminal background!
-  colorscheme slate
-elseif s:os == "ubuntu"
+"if s:os == "debian"
+"  set t_Co=256
+" " looks nice on my terminal, it keeps my transparent terminal background!
+"  colorscheme slate
+"elseif s:os == "ubuntu"
   colorscheme jellybeans
-else
-  if has("gui_running")
-    colorscheme jelleybeans  " looks nice in gui.
-  else
-    colorscheme default
-  endif
-endif
-" try <http://bytefluent.com/vivify/> to test colorschemes
+"else
+"  if has("gui_running")
+"    colorscheme jelleybeans  " looks nice in gui.
+"  else
+"    colorscheme default
+"  endif
+"endif
+"" try <http://bytefluent.com/vivify/> to test colorschemes
 
 " i want to highlight trailing whites
 hi TrailingWhitespace ctermbg=darkred ctermfg=darkred guifg=darkred guibg=darkred
@@ -222,8 +178,8 @@ call matchadd('TrailingWhitespace', '\s\+$')
 
 " i want to highlight lines longer than 80 chars in some way
 " TODO : i dont want to match it a linebreak (if i am exactly 80 chars long).
-hi ColorColumn80 ctermbg=darkmagenta ctermfg=white guibg=darkmagenta guifg=white
-call matchadd('ColorColumn80', '\%81v')
+"hi ColorColumn80 ctermbg=darkmagenta ctermfg=white guibg=darkmagenta guifg=white
+"call matchadd('ColorColumn80', '\%81v')
 
 " some settings to highlight the current line and the linenumber
 " cterm=none is needed to get rid of the ugly underlining of the current line.
@@ -232,8 +188,6 @@ hi LineNr ctermbg=black
 hi CursorLineNr ctermbg=black
 
 " options {{{1
-" path {{{2
-set path+=/usr/src/linux-headers-3.2.0-4-common/include
 " encoding {{{2
 set encoding=utf-8
 set fileencoding=utf-8
@@ -247,6 +201,7 @@ endif
 " linenumbers & cursorline {{{2
 set number
 set numberwidth=6
+set relativenumber
 set cursorline
 
 " completion & popups {{{2
@@ -312,14 +267,14 @@ set wildmode=list:longest
 " autocommands {{{1
 
 " see: https://github.com/bling/vim-airline/issues/539#issuecomment-70247140
-command! AirlineForceRefresh call airline#load_theme() | call airline#update_statusline() | call airline#load_theme() | call airline#update_statusline()
+"command! AirlineForceRefresh call airline#load_theme() | call airline#update_statusline() | call airline#load_theme() | call airline#update_statusline()
 augroup myvimrcstuff "{{{2
   autocmd!
   " reload vimrc when saved (and refresh airline due to:
   "     <https://github.com/bling/vim-airline/issues/539> )
 "  autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
 "  autocmd BufWritePost $MYVIMRC AirlineRefresh
-  autocmd BufwritePost $MYVIMRC source $MYVIMRC | AirlineForceRefresh
+  "autocmd BufwritePost $MYVIMRC source $MYVIMRC | AirlineForceRefresh
 augroup END
 
 
@@ -351,8 +306,8 @@ augroup END
 augroup mypythonstuff "{{{2
   autocmd!
   autocmd FileType python set cindent
-  autocmd FileType python set shiftwidth=4
-  autocmd FileType python set softtabstop=4
+  autocmd FileType python set shiftwidth=2
+  autocmd FileType python set softtabstop=2
   autocmd FileType python set expandtab
   autocmd FileType python set omnifunc=jedi#completions
   autocmd FileType python map <F5> <ESC>:w<CR>:!python % <CR>
@@ -487,10 +442,6 @@ if has("gui_running")
 else
   nnoremap <C-@> zi
 endif
-
-" gundo {{{2
-" TODO: install python 2.7 on windows and test again. (python3 didn't work)
-nnoremap <leader>u :GundoToggle<CR>
 
 " navigation {{{2
 " let ß (on german keyboard next to zero) jump to last char of line
