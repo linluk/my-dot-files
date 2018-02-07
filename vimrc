@@ -9,7 +9,7 @@
 "   mkdir ~/.vim/tmp/undo
 "   mkdir ~/.vim/tmp/swap
 "   mkdir ~/.vim/bundle
-"   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "   vim
 "   :PluginInstall
 " done.
@@ -88,6 +88,7 @@ else
   Plugin 'xolox/vim-misc'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'davidhalter/jedi-vim'
+  "Plugin 'artur-shaik/vim-javacomplete2'
 
   " my own plugins
   Plugin 'linluk/vim-websearch'
@@ -117,10 +118,6 @@ else
 endif
 
 
-" vim-airline {{{2
-" i want to use the airline tabs
-"let g:airline#extensions#tabline#enabled=1
-
 " dragvisuals.vim {{{2
 " delete trailing whites if there were added some by dragging by dragvisuals
 let g:DVB_TrimWS = 1
@@ -144,6 +141,9 @@ let g:jedi#rename_command = ""
 let g:jedi#auto_vim_configuration = 0
 
 autocmd FileType python setlocal completeopt-=preview
+
+" vim-javacomplete2 {{{2
+"autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " gui {{{1
 if has("gui_running")
