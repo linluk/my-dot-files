@@ -88,10 +88,11 @@ else
   Plugin 'xolox/vim-misc'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'davidhalter/jedi-vim'
-  "Plugin 'artur-shaik/vim-javacomplete2'
+  Plugin 'justmao945/vim-clang'
 
   " my own plugins
   Plugin 'linluk/vim-websearch'
+  Plugin 'linluk/vim-c2h'
 
   " add plugins before this
   call vundle#end()
@@ -141,9 +142,6 @@ let g:jedi#rename_command = ""
 let g:jedi#auto_vim_configuration = 0
 
 autocmd FileType python setlocal completeopt-=preview
-
-" vim-javacomplete2 {{{2
-"autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " gui {{{1
 if has("gui_running")
@@ -306,8 +304,8 @@ augroup END
 augroup mypythonstuff "{{{2
   autocmd!
   autocmd FileType python set cindent
-  autocmd FileType python set shiftwidth=2
-  autocmd FileType python set softtabstop=2
+  autocmd FileType python set shiftwidth=4
+  autocmd FileType python set softtabstop=4
   autocmd FileType python set expandtab
   autocmd FileType python set omnifunc=jedi#completions
   autocmd FileType python map <F5> <ESC>:w<CR>:!python % <CR>
@@ -431,6 +429,7 @@ else
   nnoremap <leader>v :e ~/.vimrc<CR>
 endif
 
+
 " folding {{{2
 " use <space> to toggle fold under cursor
 nnoremap <SPACE> za
@@ -503,6 +502,7 @@ command! WM wall | make
 cnoreabbrev wm WM
 
 " functions {{{1
+
 
 function! AddGpl3License() "{{{2
   let l:progname = input("program to create the license for?\n")
@@ -609,3 +609,4 @@ if has("gui_running")
   autocmd VimEnter * if g:screen_size_restore_pos == 1 | call ScreenRestore() | endif
   autocmd VimLeavePre * if g:screen_size_restore_pos == 1 | call ScreenSave() | endif
 endif
+
