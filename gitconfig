@@ -1,7 +1,9 @@
 [user]
-  name = Lukas Singer
-  email = lukas42singer (at) gmail <dot> com
+	name = linluk
+	email = lukas42singer@gmail.com
 [core]
-  editor = vim
+	editor = vim
 [github]
-  user = linluk
+	user = linluk
+[credential]
+	helper = cache --timeout=3600
