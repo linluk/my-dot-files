@@ -84,7 +84,6 @@ else
   " to delete a plugin remove it here and run :PluginClean
 
   Plugin 'jondkinney/dragvisuals.vim'
-  "Plugin 'bling/vim-airline'
   Plugin 'xolox/vim-misc'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'davidhalter/jedi-vim'
