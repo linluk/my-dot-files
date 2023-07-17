@@ -21,24 +21,9 @@
 "
 "
 
-" os {{{1
-if has("win32")
-  " i am a windows machine
-  let s:os = "windows"
-elseif has("unix")
-  let s:uname = system("uname -a")
-  if s:uname =~ "Debian"
-    let s:os = "debian"
-  elseif s:uname =~ "Ubuntu"
-    let s:os = "ubuntu"
-  else
-    let s:os = "unix"
-  endif
-endif
 
-
-" debian {{{2
-if s:os == "debian"
+" debian {{{1
+if system("uname -a") =~ "Debian"
   runtime! debian.vim
 endif
 
@@ -56,47 +41,35 @@ filetype plugin indent off
 syntax off
 
 " load the plugins
-if s:os == "windows"
-  " sadly i cannot use vundle on windows (due to proxy settings of the company
-  " they dont allow git --> WTF ?!
-  for s:entry in split(expand('$VIM/vimfiles/wtf/*'))
-    if isdirectory(s:entry)
-      execute 'set rtp+='.s:entry
-    endif
-  endfor
-else
-  " yes! i am not on windows. i am so happy !!
-  " have i mentioned that i don't like windows.
 
-  " anyways, set the runtimepath for vundle
-  set rtp+=~/.vim/bundle/Vundle.vim
+" anyways, set the runtimepath for vundle
+set rtp+=~/.vim/bundle/Vundle.vim
 
-  " start vundle environment
-  " the default is ~/.vim/bundle
-  call vundle#begin()
+" start vundle environment
+" the default is ~/.vim/bundle
+call vundle#begin()
 
-  " list of plugins {{{2
-  " let Vundle manage Vundle (this is required)
-  Plugin 'VundleVim/Vundle.vim'
+" list of plugins {{{2
+" let Vundle manage Vundle (this is required)
+Plugin 'VundleVim/Vundle.vim'
 
-  " to install a plugin add it here and run :PluginInstall.
-  " to update the plugins run :PluginInstall! or :PluginUpdate
-  " to delete a plugin remove it here and run :PluginClean
+" to install a plugin add it here and run :PluginInstall.
+" to update the plugins run :PluginInstall! or :PluginUpdate
+" to delete a plugin remove it here and run :PluginClean
 
-  Plugin 'jondkinney/dragvisuals.vim'
-  Plugin 'xolox/vim-misc'
-  Plugin 'flazz/vim-colorschemes'
-  Plugin 'davidhalter/jedi-vim'
-  Plugin 'justmao945/vim-clang'
+Plugin 'jondkinney/dragvisuals.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'justmao945/vim-clang'
+Plugin 'sillybun/vim-repl'
 
-  " my own plugins
-  Plugin 'linluk/vim-websearch'
-  Plugin 'linluk/vim-c2h'
+" my own plugins
+Plugin 'linluk/vim-websearch'
+Plugin 'linluk/vim-c2h'
 
-  " add plugins before this
-  call vundle#end()
-
-endif
+" add plugins before this
+call vundle#end()
 
 " filetype syntax {{{1
 " now (after vundle finished) it is save to turn filetype plugins on
@@ -109,13 +82,7 @@ syntax on
 
 " vim-websearch {{{2
 let g:web_search_engine = "google"
-if s:os == "windows"
-  " TODO : fix windows incompatibility in the plugin!
-  "let g:web_search_command = "C:\\Program Files\ \(x86\)\\Google\\Chrome\\Application\\chrome.exe"
-  "let g:web_search_command = "C:\\Program Files\\Internet Explorer\\iexplore.exe"
-else
-  let g:web_search_browser = "lynx"
-endif
+let g:web_search_browser = "lynx"
 
 
 " dragvisuals.vim {{{2
@@ -142,6 +109,14 @@ let g:jedi#auto_vim_configuration = 0
 
 autocmd FileType python setlocal completeopt-=preview
 
+" REPL {{{2
+let g:repl_program = { 'python': ['python3'], 'default': ['bash'] }
+let g:repl_position = 3
+let g:repl_cursor_down = 1
+let g:repl_python_automerge = 1
+let g:repl_width = 80
+
+
 " gui {{{1
 if has("gui_running")
   set guifont=courier_new:h9
@@ -152,21 +127,7 @@ if has("gui_running")
 endif
 
 " colors {{{1
-"enable 256 colors when in gnome-terminal (my debian machine)
-"if $COLORTERM == 'gnome-terminal'
-"if s:os == "debian"
-"  set t_Co=256
-" " looks nice on my terminal, it keeps my transparent terminal background!
-"  colorscheme slate
-"elseif s:os == "ubuntu"
-  colorscheme jellybeans
-"else
-"  if has("gui_running")
-"    colorscheme jelleybeans  " looks nice in gui.
-"  else
-"    colorscheme default
-"  endif
-"endif
+colorscheme jellybeans
 "" try <http://bytefluent.com/vivify/> to test colorschemes
 
 " i want to highlight trailing whites
@@ -191,9 +152,7 @@ set fileencoding=utf-8
 
 " spelling {{{2
 set spelllang=de,en
-if s:os != "windows"
-  set spellfile=~/.vim/spell/linluk.utf-8.add
-endif
+set spellfile=~/.vim/spell/linluk.utf-8.add
 
 " linenumbers & cursorline {{{2
 set number
@@ -222,8 +181,8 @@ set backspace=indent,eol,start
 set autoindent
 " try cindent, do i like this?
 set cindent
-set shiftwidth=2
-set softtabstop=2
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 " fix the c-switch-case{} indendation:
 " <http://stackoverflow.com/questions/19990835/issue-with-cindent-indentation-
@@ -233,15 +192,9 @@ set cinoptions=l1
 " undo, backup & swap {{{2
 " the double slash at the end of the paths makes filenames include the path
 " with slashes replaced by percent sign.
-if s:os != "windows"
-  set undodir=~/.vim/tmp/undo//
-  set backupdir=~/.vim/tmp/backup//
-  set directory=~/.vim/tmp/swap//
-else
-  set undodir=$VIM/vimfiles/tmp/undo//
-  set backupdir=$VIM/vimfiles/tmp/backup//
-  set directory=$VIM/vimfiles/tmp/swap//
-endif
+set undodir=~/.vim/tmp/undo//
+set backupdir=~/.vim/tmp/backup//
+set directory=~/.vim/tmp/swap//
 set backupskip=*/tmp/*
 set backup
 set undofile
@@ -277,16 +230,6 @@ augroup END
 
 augroup mylatexstuff "{{{2
   autocmd!
-  " replace umlauts in latex
-  " i use mapping for this, because i want to replace them always not only
-  " when they are a single char (thats what iabbrev does).
-  autocmd Filetype tex,latex inoremap <buffer> ü {\"u}
-  autocmd Filetype tex,latex inoremap <buffer> Ü {\"U}
-  autocmd Filetype tex,latex inoremap <buffer> ä {\"a}
-  autocmd Filetype tex,latex inoremap <buffer> Ä {\"A}
-  autocmd Filetype tex,latex inoremap <buffer> ö {\"o}
-  autocmd Filetype tex,latex inoremap <buffer> Ö {\"O}
-  autocmd Filetype tex,latex inoremap <buffer> ß {\ss}
 augroup END
 
 augroup myhelpstuff "{{{2
@@ -307,12 +250,13 @@ augroup mypythonstuff "{{{2
   autocmd FileType python set softtabstop=4
   autocmd FileType python set expandtab
   autocmd FileType python set omnifunc=jedi#completions
-  autocmd FileType python map <F5> <ESC>:w<CR>:!python % <CR>
 augroup END
 
 augroup mycstuff "{{{2
   autocmd!
   autocmd FileType c map <F5> <ESC>:wa<CR>:make<CR>
+  "autocmd FileType c set foldmarker={,}
+  "autocmd FileType c set foldlevel=1
 augroup END
 
 augroup mymdstuff "{{{2
@@ -422,11 +366,7 @@ nnoremap zN ]s
 
 " open files {{{2
 " I often want to open my vimrc to look something up or to change something
-if s:os == "windows"
-  nnoremap <leader>v :e $VIM/_vimrc<CR>
-else
-  nnoremap <leader>v :e ~/.vimrc<CR>
-endif
+nnoremap <leader>v :e ~/.vimrc<CR>
 
 
 " folding {{{2
@@ -478,10 +418,8 @@ vnoremap <Left>  <NOP>
 vnoremap <Right> <NOP>
 
 " misc {{{2
-if s:os != "windows"
 " show the date and time when press <leader>dt
-  nnoremap <leader>dt :echom substitute(system("date"), '\n$', '', 'g')<CR>
-endif
+nnoremap <leader>dt :echom substitute(system("date"), '\n$', '', 'g')<CR>
 
 " use <C-s> to save a file. ctrl-s doesn't work in terminals by default.
 " add the following line to ~/.bashrc
@@ -494,6 +432,9 @@ nnoremap <C-s> :w<CR>
 inoremap <C-S> <esc>:wa<CR>a
 vnoremap <C-S> <esc>:wa<CR>gv
 nnoremap <C-S> :wa<CR>
+
+" REPL {{{2
+nnoremap <leader>r :REPLToggle<Cr>
 
 " commands {{{1
 " use :wm for :write + :make

@@ -9,12 +9,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 
-dir=~/.my-dot-files             # my-dot-files directory
-old=~/.my-dot-files_OLD         # backup directory
+dir=~/.dotfiles             # my-dot-files directory
+old=~/.dotfiles_OLD         # backup directory
 # list of files/folders to link in the home dir
 #files="vimrc muttrc vimcheatsheet bashrc pylintrc"
 #files="vimrc pylintrc muttrc gitconfig"
-files="vimrc muttrc gitconfig bashrc"
+#files="vimrc muttrc gitconfig bashrc"
+files="vimrc"
 
 echo "creating backup directory ($old) ..."
 mkdir -p $old
